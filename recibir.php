@@ -9,6 +9,9 @@
     <body>
 
         <?php
+
+        require_once 'conexion.php';
+
             $nombre = $_POST['nombre'];
             $email = $_POST['email'];
             $fecha_nacimiento = $_POST['fecha_nacimiento'];
@@ -18,7 +21,22 @@
                 $email = $_POST['email'];   
                 $fecha_nacimiento = $_POST['fecha_nacimiento'];
                 
-                echo "<h2>Hola $nombre, tu email es $email y naciste el $fecha_nacimiento</h2>";
+                $sql = "INSERT INTO personas (nombre, email, fecha_nacimiento) VALUES ('$nombre', '$email', '$fecha_nacimiento')";
+
+                $conn->exec($sql);
+                $stmt = $conn->query("SELECT * FROM personas");
+                $personas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($personas as $persona) 
+                    {
+                    echo "Nombre: " . $persona['nombre'] . "<br>";
+                    echo "Email: " . $persona['email'] . "<br>";
+                    echo "Fecha de nacimiento: " . $persona['fecha_nacimiento'] . "<br><br>";
+                }
+            }
+            else 
+                { 
+                echo "<h2>Por favor, completa el formulario</h2>";
             }
         ?>
 
